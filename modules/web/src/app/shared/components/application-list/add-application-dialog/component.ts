@@ -175,10 +175,10 @@ export class AddApplicationDialogComponent implements OnInit, OnChanges, OnDestr
     const version = getApplicationVersion(this.selectedApplication);
     this.form = this._builder.group({
       [Controls.Version]: this._builder.control(version, Validators.required),
-      [Controls.Namespace]: this._builder.control(this.selectedApplication.name, [
-        Validators.required,
-        KUBERNETES_RESOURCE_NAME_PATTERN_VALIDATOR,
-      ]),
+      [Controls.Namespace]: this._builder.control(
+        this.selectedApplication.spec.defaultNamespace?.name || this.selectedApplication.name,
+        [Validators.required, KUBERNETES_RESOURCE_NAME_PATTERN_VALIDATOR]
+      ),
       [Controls.Name]: this._builder.control(this.selectedApplication.name, [
         Validators.required,
         KUBERNETES_RESOURCE_NAME_PATTERN_VALIDATOR,

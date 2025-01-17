@@ -70,6 +70,7 @@ export class ApplicationDefinition {
 
 export class ApplicationDefinitionSpec {
   defaultValues?: string | object;
+  defaultNamespace?: ApplicationNamespace;
   defaultVersion?: string;
   enforced: boolean;
   default: boolean;
