@@ -21,7 +21,12 @@ import {ApplicationService} from '@app/core/services/application';
 import {DatacenterService} from '@app/core/services/datacenter';
 import {NotificationService} from '@app/core/services/notification';
 import {UserService} from '@app/core/services/user';
-import {ApplicationDefinition, ApplicationLabel, ApplicationLabelValue} from '@app/shared/entity/application';
+import {
+  ApplicationDefinition,
+  ApplicationLabel,
+  ApplicationLabelValue,
+  ApplicationNamespace,
+} from '@app/shared/entity/application';
 import {Datacenter} from '@app/shared/entity/datacenter';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
@@ -36,7 +41,7 @@ export class ApplicationsComponent implements OnInit, OnChanges {
   isLoading = false;
   currentApplication: ApplicationDefinition;
   dataSource = new MatTableDataSource<ApplicationDefinition>();
-  displayedColumns: string[] = ['name', 'default', 'enforce', 'datacenters'];
+  displayedColumns: string[] = ['name', 'default', 'enforce', 'namespace', 'datacenters'];
   datacenters: Datacenter[] = [];
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
@@ -133,6 +138,20 @@ export class ApplicationsComponent implements OnInit, OnChanges {
     this.patchApplication(application);
   }
 
+  onNamespaceSubmit(namespace: string, application: ApplicationDefinition): void {
+    const newDefaultValue = namespace;
+
+    if (!application.spec.defaultNamespace) {
+      application.spec.defaultNamespace = new ApplicationNamespace();
+    }
+
+    if (newDefaultValue !== application.spec.defaultNamespace?.name) {
+      application.spec.defaultNamespace.name = newDefaultValue;
+    }
+
+    this.patchApplication(application);
+  }
+
   onDatacentersChange(dc: string[], application: ApplicationDefinition): void {
     if (application.spec.selector?.datacenters !== dc) {
       application.spec.selector.datacenters = dc;
@@ -167,5 +186,9 @@ export class ApplicationsComponent implements OnInit, OnChanges {
 
   targetDatacenters(app: ApplicationDefinition): string[] {
     return app.spec.selector?.datacenters || [];
+  }
+
+  defaultNamespace(app: ApplicationDefinition): string {
+    return app.spec.defaultNamespace?.name || '';
   }
 }
