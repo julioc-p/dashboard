@@ -30,6 +30,10 @@ func convertInternalToAPIApplicationDefinitionForList(appDef *appskubermaticv1.A
 		Labels:      appDef.Labels,
 		Name:        appDef.Name,
 		Spec: apiv2.ApplicationDefinitionListItemSpec{
+			DefaultNamespace: apiv1.NamespaceSpec{
+				Name:   appDef.Spec.DefaultNamespace.Name,
+				Create: appDef.Spec.DefaultNamespace.Create,
+			},
 			DisplayName:      appDef.Spec.DisplayName,
 			Description:      appDef.Spec.Description,
 			DocumentationURL: appDef.Spec.DocumentationURL,

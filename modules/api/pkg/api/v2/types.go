@@ -2095,6 +2095,10 @@ type ApplicationDefinitionListItemSpec struct {
 	// opt out from installing default applications.
 	Default bool `json:"default,omitempty"`
 
+	// DefaultNamespace specifies the default namespace which is used if a referencing ApplicationInstallation has no target namespace defined.
+	// If unset, the name of the ApplicationDefinition is being used instead.
+	DefaultNamespace apiv1.NamespaceSpec `json:"namespace"`
+
 	// Selector is used to select the targeted user clusters for defaulting and enforcing applications. This is only used for default/enforced applications and ignored otherwise.
 	// +optional
 	Selector appskubermaticv1.DefaultingSelector `json:"selector,omitempty"`
